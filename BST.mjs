@@ -197,7 +197,28 @@ class Tree {
     }
   }
 
-  // 10 -
+  // 10 - Write an isBalanced function
+  isBalanced(node = this.root) {
+    if (node === null) return true;
+
+    const height = (node) => {
+      if (node === null) return -1;
+      return 1 + Math.max(height(node.left), height(node.right));
+    };
+
+    const leftHeight = height(node.left);
+    const rightHeight = height(node.right);
+    const heightDiff = Math.abs(leftHeight - rightHeight);
+
+    // Esta rama está balanceada si:
+    // - la diferencia de alturas es como mucho 1
+    // - los subárboles también están balanceados
+    return (
+      heightDiff <= 1 &&
+      this.isBalanced(node.left) &&
+      this.isBalanced(node.right)
+    );
+  }
 }
 
 // prettyPrint
@@ -254,3 +275,5 @@ console.log("Heigh of the node with value 100:", tree.height(100)); // null (doe
 console.log("Depth del nodo con valor 8:", tree.depth(8)); // 0
 console.log("Depth del nodo con valor 5:", tree.depth(5)); // 3
 console.log("Depth de nodo inexistente:", tree.depth(100)); // null
+
+console.log("Is balanced?", tree.isBalanced()); // false
