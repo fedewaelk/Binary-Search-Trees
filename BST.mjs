@@ -170,6 +170,22 @@ class Tree {
     this.postOrder(callback, node.right);
     callback(node);
   }
+
+  // 8 - Write a height(value) function
+  height(value) {
+    const node = this.find(value);
+    if (node === null) return null;
+
+    const computeHeight = (node) => {
+      if (node === null) return -1; // uso -1 porque las hojas deben retornar 0
+      return 1 + Math.max(computeHeight(node.left), computeHeight(node.right));
+    };
+
+    return computeHeight(node);
+  }
+
+  // 9 -
+  // 10 -
 }
 
 // prettyPrint
@@ -218,3 +234,7 @@ tree.preOrder((node) => console.log(node.data));
 
 console.log("Post-order:");
 tree.postOrder((node) => console.log(node.data));
+
+console.log("Heigh of the node with value 8:", tree.height(8)); // 4
+console.log("Heigh of the node with value 1:", tree.height(1)); // 0 (it's leaf)
+console.log("Heigh of the node with value 100:", tree.height(100)); // null (doesn't exist)
