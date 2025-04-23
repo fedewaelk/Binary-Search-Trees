@@ -33,6 +33,47 @@ class Tree {
 
     return build(uniqueSortedArray);
   }
+
+  // 4 - Write insert(value) and deleteItem(value) functions
+  insert(value, node = this.root) {
+    if (node === null) return new Node(value);
+
+    if (value < node.data) {
+      node.left = this.insert(value, node.left);
+    } else if (value > node.data) {
+      node.right = this.insert(value, node.right);
+    }
+    // Si value = node.data, no insertar nada (ya está en el árbol)
+
+    return node;
+  }
+
+  deleteItem(value, node = this.root) {
+    if (node === null) return node;
+
+    if (value < node.data) {
+      node.left = this.deleteItem(value, node.left);
+    } else if (value > node.data) {
+      node.right = this.deleteItem(value, node.right);
+    } else {
+      // Caso 1: sin hijos
+      if (node.left === null && node.right === null) return null;
+
+      // Caso 2: un solo hijo
+      if (node.left === null) return node.right;
+      if (node.right === null) return node.left;
+
+      // Caso 3: dos hijos → obtener el sucesor in-order
+      let successor = node.right;
+      while (successor.left !== null) {
+        successor = successor.left;
+      }
+      node.data = successor.data;
+      node.right = this.deleteItem(successor.data, node.right);
+    }
+
+    return node;
+  }
 }
 
 // prettyPrint
@@ -49,3 +90,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 // test
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+prettyPrint(tree.root);
+
+tree.insert(6);
+console.log("Insert 6:");
+prettyPrint(tree.root);
+
+tree.deleteItem(67);
+console.log("Delete 67:");
+prettyPrint(tree.root);
