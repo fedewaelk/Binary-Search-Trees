@@ -132,6 +132,44 @@ class Tree {
       visitLevel(this.root, i);
     }
   }
+
+  // 7 - Write inOrder(callback), preOrder(callback), and postOrder(callback) functions
+  // izquierda → nodo → derecha
+  inOrder(callback, node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("A callback function is required");
+    }
+
+    if (node === null) return;
+
+    this.inOrder(callback, node.left);
+    callback(node);
+    this.inOrder(callback, node.right);
+  }
+  // nodo → izquierda → derecha
+  preOrder(callback, node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("A callback function is required");
+    }
+
+    if (node === null) return;
+
+    callback(node);
+    this.preOrder(callback, node.left);
+    this.preOrder(callback, node.right);
+  }
+  // izquierda → derecha → nodo
+  postOrder(callback, node = this.root) {
+    if (typeof callback !== "function") {
+      throw new Error("A callback function is required");
+    }
+
+    if (node === null) return;
+
+    this.postOrder(callback, node.left);
+    this.postOrder(callback, node.right);
+    callback(node);
+  }
 }
 
 // prettyPrint
@@ -171,3 +209,12 @@ console.log("Recursive:");
 tree.levelOrderRecursive((node) => {
   console.log(node.data); // 8, 4, 324, 3, 7, 23, 6345, 1, 5, 9, 6
 });
+
+console.log("In-order:");
+tree.inOrder((node) => console.log(node.data));
+
+console.log("Pre-order:");
+tree.preOrder((node) => console.log(node.data));
+
+console.log("Post-order:");
+tree.postOrder((node) => console.log(node.data));
