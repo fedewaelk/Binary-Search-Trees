@@ -184,7 +184,19 @@ class Tree {
     return computeHeight(node);
   }
 
-  // 9 -
+  // 9 - Write a depth(value) function
+  depth(value, node = this.root, currentDepth = 0) {
+    if (node === null) return null;
+
+    if (value === node.data) {
+      return currentDepth;
+    } else if (value < node.data) {
+      return this.depth(value, node.left, currentDepth + 1);
+    } else {
+      return this.depth(value, node.right, currentDepth + 1);
+    }
+  }
+
   // 10 -
 }
 
@@ -238,3 +250,7 @@ tree.postOrder((node) => console.log(node.data));
 console.log("Heigh of the node with value 8:", tree.height(8)); // 4
 console.log("Heigh of the node with value 1:", tree.height(1)); // 0 (it's leaf)
 console.log("Heigh of the node with value 100:", tree.height(100)); // null (doesn't exist)
+
+console.log("Depth del nodo con valor 8:", tree.depth(8)); // 0
+console.log("Depth del nodo con valor 5:", tree.depth(5)); // 3
+console.log("Depth de nodo inexistente:", tree.depth(100)); // null
