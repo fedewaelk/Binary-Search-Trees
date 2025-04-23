@@ -74,11 +74,26 @@ class Tree {
 
     return node;
   }
+
+  // 5 - Write a find(value) function
+  find(value, node = this.root) {
+    if (node === null) return null;
+
+    if (value === node.data) {
+      return node;
+    } else if (value < node.data) {
+      return this.find(value, node.left);
+    } else {
+      return this.find(value, node.right);
+    }
+  }
 }
 
 // prettyPrint
 const prettyPrint = (node, prefix = "", isLeft = true) => {
-  if (node === null) return;
+  if (node === null) {
+    return;
+  }
   if (node.right !== null) {
     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
   }
@@ -99,3 +114,6 @@ prettyPrint(tree.root);
 tree.deleteItem(67);
 console.log("Delete 67:");
 prettyPrint(tree.root);
+
+console.log("Found node with data = 7 :", tree.find(7)); // Node with data = 7
+console.log("Node not found :", tree.find(100)); // null
