@@ -87,6 +87,51 @@ class Tree {
       return this.find(value, node.right);
     }
   }
+
+  // 6 - Write a levelOrder(callback)
+  //iteration
+  levelOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A callback function is required");
+    }
+
+    const queue = [];
+    if (this.root !== null) queue.push(this.root);
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      callback(current);
+
+      if (current.left) queue.push(current.left);
+      if (current.right) queue.push(current.right);
+    }
+  }
+  // recursion
+  levelOrderRecursive(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A callback function is required");
+    }
+
+    const height = (node) => {
+      if (node === null) return 0;
+      return 1 + Math.max(height(node.left), height(node.right));
+    };
+
+    const visitLevel = (node, level) => {
+      if (node === null) return;
+      if (level === 1) {
+        callback(node);
+      } else {
+        visitLevel(node.left, level - 1);
+        visitLevel(node.right, level - 1);
+      }
+    };
+
+    const h = height(this.root);
+    for (let i = 1; i <= h; i++) {
+      visitLevel(this.root, i);
+    }
+  }
 }
 
 // prettyPrint
@@ -117,3 +162,12 @@ prettyPrint(tree.root);
 
 console.log("Found node with data = 7 :", tree.find(7)); // Node with data = 7
 console.log("Node not found :", tree.find(100)); // null
+
+console.log("Iteration:");
+tree.levelOrder((node) => {
+  console.log(node.data); // 8, 4, 324, 3, 7, 23, 6345, 1, 5, 9, 6
+});
+console.log("Recursive:");
+tree.levelOrderRecursive((node) => {
+  console.log(node.data); // 8, 4, 324, 3, 7, 23, 6345, 1, 5, 9, 6
+});
