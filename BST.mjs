@@ -219,6 +219,21 @@ class Tree {
       this.isBalanced(node.right)
     );
   }
+
+  // 11 - Write a rebalance function
+  // Primero array de los valores del árbol en orden
+  inOrderArray(node = this.root, result = []) {
+    if (node === null) return result;
+    this.inOrderArray(node.left, result);
+    result.push(node.data);
+    this.inOrderArray(node.right, result);
+    return result;
+  }
+
+  rebalance() {
+    const sortedValues = this.inOrderArray();
+    this.root = this.buildTree(sortedValues);
+  }
 }
 
 // prettyPrint
@@ -277,3 +292,6 @@ console.log("Depth del nodo con valor 5:", tree.depth(5)); // 3
 console.log("Depth de nodo inexistente:", tree.depth(100)); // null
 
 console.log("Is balanced?", tree.isBalanced()); // false
+
+tree.rebalance();
+console.log("After rebalance", tree.isBalanced());
