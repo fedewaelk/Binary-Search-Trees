@@ -230,6 +230,7 @@ class Tree {
     return result;
   }
 
+  // Luego rebalance()
   rebalance() {
     const sortedValues = this.inOrderArray();
     this.root = this.buildTree(sortedValues);
@@ -250,48 +251,67 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-// test
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// DRIVER SCRIPT
+// Create an array of random numbers < 100
+function randomArray(size, max = 100) {
+  const set = new Set();
+  while (set.size < size) {
+    set.add(Math.floor(Math.random() * max));
+  }
+  return Array.from(set);
+}
+
+// Create a tree
+const initialValues = randomArray(15);
+console.log("Initial values:", initialValues);
+const tree = new Tree(initialValues);
+console.log("----------- INITIAL TREE -----------");
 prettyPrint(tree.root);
 
-tree.insert(6);
-console.log("Insert 6:");
-prettyPrint(tree.root);
+// Confirm that the tree is balanced
+console.log("¿The tree starts balanced?", tree.isBalanced());
 
-tree.deleteItem(67);
-console.log("Delete 67:");
-prettyPrint(tree.root);
+// Print out all elements in level, pre, post, and in order
+console.log("Level Order:");
+tree.levelOrder((node) => console.log(node.data));
 
-console.log("Found node with data = 7 :", tree.find(7)); // Node with data = 7
-console.log("Node not found :", tree.find(100)); // null
-
-console.log("Iteration:");
-tree.levelOrder((node) => {
-  console.log(node.data); // 8, 4, 324, 3, 7, 23, 6345, 1, 5, 9, 6
-});
-console.log("Recursive:");
-tree.levelOrderRecursive((node) => {
-  console.log(node.data); // 8, 4, 324, 3, 7, 23, 6345, 1, 5, 9, 6
-});
-
-console.log("In-order:");
-tree.inOrder((node) => console.log(node.data));
-
-console.log("Pre-order:");
+console.log("Pre Order:");
 tree.preOrder((node) => console.log(node.data));
 
-console.log("Post-order:");
+console.log("Post Order:");
 tree.postOrder((node) => console.log(node.data));
 
-console.log("Heigh of the node with value 8:", tree.height(8)); // 4
-console.log("Heigh of the node with value 1:", tree.height(1)); // 0 (it's leaf)
-console.log("Heigh of the node with value 100:", tree.height(100)); // null (doesn't exist)
+console.log("In Order:");
+tree.inOrder((node) => console.log(node.data));
 
-console.log("Depth del nodo con valor 8:", tree.depth(8)); // 0
-console.log("Depth del nodo con valor 5:", tree.depth(5)); // 3
-console.log("Depth de nodo inexistente:", tree.depth(100)); // null
+//Unbalance the tree by adding several numbers > 100.
+tree.insert(101);
+tree.insert(102);
+tree.insert(103);
+tree.insert(104);
+tree.insert(105);
 
-console.log("Is balanced?", tree.isBalanced()); // false
+// Confirm that the tree is unbalanced
+console.log("----------- UNBALANCED TREE -----------");
+console.log("¿It's balanced after adding numbers > 100?", tree.isBalanced());
+prettyPrint(tree.root);
 
+// Balance the tree
 tree.rebalance();
-console.log("After rebalance", tree.isBalanced());
+// Confirm that the tree is balanced
+console.log("----------- REBALANCED TREE -----------");
+console.log("¿It's balanced after rebalance?", tree.isBalanced());
+prettyPrint(tree.root);
+
+// Print out all elements in level, pre, post, and in order
+console.log("Level Order after rebalance:");
+tree.levelOrder((node) => console.log(node.data));
+
+console.log("Pre Order after rebalance:");
+tree.preOrder((node) => console.log(node.data));
+
+console.log("Post Order after rebalance:");
+tree.postOrder((node) => console.log(node.data));
+
+console.log("In Order after rebalance:");
+tree.inOrder((node) => console.log(node.data));
